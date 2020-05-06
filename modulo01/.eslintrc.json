@@ -26,6 +26,7 @@
         "prettier/prettier": "error",
         "no-param-reassign": "off",
         "class-methods-use-this": "off",
+        "@typescript-eslint/camelcase": "off",
         "import/extensions": [
             "error",
             "ignorePackages",
