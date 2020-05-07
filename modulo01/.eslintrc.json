@@ -27,6 +27,9 @@
         "no-param-reassign": "off",
         "class-methods-use-this": "off",
         "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-unused-vars": ["error", {
+            "argsIgnorePattern": "_"
+        }],
         "import/extensions": [
             "error",
             "ignorePackages",
