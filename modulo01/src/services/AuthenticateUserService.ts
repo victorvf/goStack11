@@ -3,6 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
 import authConfig from '../config/auth';
+import AppError from '../errors/AppError';
 
 import User from '../models/User';
 
@@ -27,11 +28,11 @@ class AuthenticateUserService {
         });
 
         if (!user) {
-            throw new Error('User does not exists');
+            throw new AppError('email/password does not match', 401);
         }
 
         if (!(await compare(password, user.password))) {
-            throw new Error('User does not exists');
+            throw new AppError('email/password does not match', 401);
         }
 
         const { secret, expiresIn } = authConfig.jwt;
