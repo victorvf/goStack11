@@ -4,7 +4,13 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import api from '../../services/api';
 
-import { Header, RepositoryInfo, Issues } from './styles';
+import {
+  Header,
+  RepositoryInfo,
+  Issues,
+  IssueFilter,
+  PageActions,
+} from './styles';
 
 import logo from '../../assets/log.svg';
 
@@ -35,24 +41,50 @@ interface Issue {
 
 const Dashboard: React.FC = () => {
   const { params } = useRouteMatch<RepositoryParams>();
+  const repositoryName = params.repository;
+
   const [repository, setRepository] = useState<Repository | null>(null);
   const [issues, setIssues] = useState<Issue[]>([]);
 
+  const filters = [
+    { state: 'all', label: 'Todas' },
+    { state: 'open', label: 'Abertas' },
+    { state: 'closed', label: 'Fechadas' },
+  ];
+  const [filterIndex, setFilterIndex] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+
   useEffect(() => {
     async function loadRepository(): Promise<void> {
-      const repositoryName = params.repository;
+      const response = await api.get(`/repos/${repositoryName}`);
 
-      const [repositoryResponse, issuesResponse] = await Promise.all([
-        api.get(`/repos/${repositoryName}`),
-        api.get(`/repos/${repositoryName}/issues`),
-      ]);
-
-      setRepository(repositoryResponse.data);
-      setIssues(issuesResponse.data);
+      setRepository(response.data);
     }
 
     loadRepository();
-  }, [params.repository]);
+  }, [params.repository, repositoryName]);
+
+  useEffect(() => {
+    async function loadIssues(): Promise<void> {
+      const response = await api.get(`/repos/${repositoryName}/issues`, {
+        params: {
+          state: filters[filterIndex].state,
+          per_page: 5,
+          page,
+        },
+      });
+
+      setIssues(response.data);
+    }
+
+    loadIssues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterIndex, page]);
+
+  function handleFilterClick(index: number): void {
+    setFilterIndex(index);
+    setPage(1);
+  }
 
   return (
     <>
@@ -87,11 +119,23 @@ const Dashboard: React.FC = () => {
             </li>
             <li>
               <strong>{repository.open_issues_count}</strong>
-              <span>Issues abertas</span>
+              <span>Issues</span>
             </li>
           </ul>
         </RepositoryInfo>
       )}
+
+      <IssueFilter active={filterIndex}>
+        {filters.map((filter, index) => (
+          <button
+            type="button"
+            key={filter.label}
+            onClick={() => handleFilterClick(index)}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </IssueFilter>
       <Issues>
         {issues.map((issue) => (
           <a key={issue.id} href={issue.html_url}>
@@ -103,6 +147,21 @@ const Dashboard: React.FC = () => {
           </a>
         ))}
       </Issues>
+      <PageActions>
+        <button
+          type="button"
+          disabled={page < 2}
+          onClick={() => setPage(page - 1)}
+        >
+          Anterior
+        </button>
+
+        <span>Página: {page}</span>
+
+        <button type="button" onClick={() => setPage(page + 1)}>
+          Próxima
+        </button>
+      </PageActions>
     </>
   );
 };

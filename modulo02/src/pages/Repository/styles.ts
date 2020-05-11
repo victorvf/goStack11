@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface IssueProps {
+  active: number;
+}
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
@@ -78,7 +82,7 @@ export const RepositoryInfo = styled.section`
 `;
 
 export const Issues = styled.div`
-  margin-top: 80px;
+  margin-top: 20px;
 
   a {
     background: #fff;
@@ -117,6 +121,52 @@ export const Issues = styled.div`
 
     svg {
       margin-left: auto;
+    }
+  }
+`;
+
+export const IssueFilter = styled.div<IssueProps>`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 80px;
+
+  button {
+    color: #333;
+    background: none;
+    width: 150px;
+    border: 0;
+    padding-bottom: 10px;
+
+    &:nth-child(${(props) => props.active + 1}) {
+      color: #7159c1;
+      border-bottom: 1px solid #7159c1;
+    }
+  }
+`;
+
+export const PageActions = styled.div`
+  margin-top: 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  button {
+    padding: 8px;
+    outline: 0;
+    border: 0;
+    background: #7159c1;
+    color: #fff;
+    border-radius: 4px;
+    transition: opacity 0.25s ease-out;
+
+    display: flex;
+    align-items: center;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 `;
