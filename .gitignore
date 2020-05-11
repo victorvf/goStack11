@@ -1,5 +1,0 @@
-node_modules/
-postgres/
-
-modulo01/tmp/*
-!modulo01/tmp/.gitkeep
