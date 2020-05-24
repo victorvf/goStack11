@@ -9,6 +9,7 @@ const Stack = createStackNavigator();
 const Routes: React.FC = () => {
   return (
     <Stack.Navigator
+      initialRouteName="SignIn"
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: '#312e38' },
