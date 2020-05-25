@@ -1,15 +1,35 @@
-import styled from 'styled-components/native';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import styled, { css } from 'styled-components/native';
 
-export const Container = styled.View`
+interface ContainerProps {
+  isFocused: boolean;
+  isErrored: boolean;
+}
+
+export const Container = styled.View<ContainerProps>`
   width: 100%;
   height: 60px;
   padding: 0 16px;
   background: #232129;
   border-radius: 10px;
   margin-bottom: 8px;
+  border-width: 2px;
+  border-color: #232129;
 
   flex-direction: row;
   align-items: center;
+
+  ${(props) =>
+    props.isErrored &&
+    css`
+      border-color: #c53030;
+    `}
+
+  ${(props) =>
+    props.isFocused &&
+    css`
+      border-color: #ff9000;
+    `}
 `;
 
 export const TextInput = styled.TextInput`
@@ -18,4 +38,10 @@ export const TextInput = styled.TextInput`
   font-size: 16px;
   font-family: 'RobotoSlab-Regular';
   margin-left: 16px;
+`;
+
+export const TextError = styled.Text`
+  color: #c53030;
+  font-size: 16px;
+  margin: 0 0 3px;
 `;
