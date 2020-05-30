@@ -7,6 +7,7 @@ import uploadConfig from '@config/upload';
 import routes from './routes';
 
 import '@shared/infra/typeorm';
+import '@shared/container';
 
 import HandleExceptionMiddleware from './middlewares/HandleException';
 
