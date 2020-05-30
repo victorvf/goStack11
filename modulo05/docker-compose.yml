@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: admin
   node:
     build: .
-    image: modulo:0.1
+    image: modulo:0.5
     command: yarn dev:server
     volumes:
       -  .:/home/node/api

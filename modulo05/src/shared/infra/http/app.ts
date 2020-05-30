@@ -3,10 +3,10 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
+import uploadConfig from '@config/upload';
 import routes from './routes';
 
-import './database';
-import uploadConfig from './config/upload';
+import '@shared/infra/typeorm';
 
 import HandleExceptionMiddleware from './middlewares/HandleException';
 
