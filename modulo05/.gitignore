@@ -3,3 +3,5 @@ postgres/
 
 tmp/*
 tmp/.gitkeep
+
+coverage/
