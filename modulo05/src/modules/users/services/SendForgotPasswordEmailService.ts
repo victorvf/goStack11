@@ -33,9 +33,11 @@ class SendForgotPasswordEmail {
             );
         }
 
-        await this.userTokensRepository.generate(userExists.id);
+        const { token } = await this.userTokensRepository.generate(
+            userExists.id,
+        );
 
-        await this.mailProvider.sendMail(email, 'Deu tudo certo');
+        await this.mailProvider.sendMail(email, `Deu tudo certo ${token}`);
     }
 }
 
