@@ -5,8 +5,6 @@ import IMailProvider from '@shared/container/providers/MailProvider/models/IMail
 import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
 
-// import User from '../infra/typeorm/entities/User';
-
 interface IRequest {
     email: string;
 }
@@ -37,7 +35,20 @@ class SendForgotPasswordEmail {
             userExists.id,
         );
 
-        await this.mailProvider.sendMail(email, `Deu tudo certo ${token}`);
+        await this.mailProvider.sendMail({
+            to: {
+                name: userExists.name,
+                email: userExists.email,
+            },
+            subject: '[GoBarber] Recuperação de Senha',
+            templateData: {
+                template: 'Olá, {{ name }}: seu token -> {{ token }}',
+                variables: {
+                    name: userExists.name,
+                    token,
+                },
+            },
+        });
     }
 }
 
