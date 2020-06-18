@@ -1,5 +1,14 @@
 version: '3'
 services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo2020
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongoDb:/data/db
   db:
     image: postgres
     volumes:
@@ -18,3 +27,4 @@ services:
       - "3333:3333"
     depends_on:
       - db
+      - mongo
