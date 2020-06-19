@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 import routes from './routes';
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/files', express.static(uploadConfig.tmpFolder));
 app.use(routes);
 
+app.use(errors());
 app.use(HandleExceptionMiddleware);
 
 export default app;
