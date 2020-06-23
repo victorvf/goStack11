@@ -1,8 +1,18 @@
-import multer from 'multer';
+import multer, { StorageEngine } from 'multer';
 import crypto from 'crypto';
 import { resolve } from 'path';
 
 const tmpFolder = resolve(__dirname, '..', '..', 'tmp');
+
+interface IUploadConfig {
+    tmpFolder: string;
+    uploadsFolder: string;
+    storage: StorageEngine;
+    driver: 's3' | 'disk';
+    aws: {
+        bucket: string;
+    };
+}
 
 export default {
     tmpFolder,
@@ -16,4 +26,8 @@ export default {
             return callback(null, fileName);
         },
     }),
-};
+    driver: process.env.STORAGE_DRIVER,
+    aws: {
+        bucket: 'app-gobarber',
+    },
+} as IUploadConfig;
