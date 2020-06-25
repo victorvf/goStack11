@@ -7,7 +7,7 @@ export default (
     request: Request,
     response: Response,
     _: NextFunction,
-): Response<any> => {
+): Response => {
     if (error instanceof AppError) {
         return response.status(error.statusCode).json({
             status: 'error',

@@ -12,9 +12,11 @@ import '@shared/infra/typeorm';
 import '@shared/container';
 
 import HandleExceptionMiddleware from './middlewares/HandleException';
+import RateLimiterMiddleware from './middlewares/RateLimiter';
 
 const app = express();
 
+app.use(RateLimiterMiddleware);
 app.use(cors());
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.tmpFolder));
