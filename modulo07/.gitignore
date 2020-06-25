@@ -1,0 +1,9 @@
+node_modules/
+postgres/
+mongoDb/
+
+tmp/*
+tmp/.gitkeep
+
+coverage/
+.env
