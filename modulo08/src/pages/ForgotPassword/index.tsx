@@ -1,9 +1,11 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiLogIn, FiMail } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+
+import api from '../../services/api';
 
 import Logo from '../../assets/logo.svg';
 
@@ -21,13 +23,16 @@ interface ForgotPasswordFormData {
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
     async (data: ForgotPasswordFormData) => {
       try {
+        setLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -39,6 +44,17 @@ const ForgotPassword: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
+
+        await api.post('/password/forgot', { email: data.email });
+
+        addToast({
+          type: 'success',
+          title: 'E-mail de recuperação de senha',
+          description:
+            'Enviamos um e-mail para confirmar a recuperação de senha, check sua caixa de entrada',
+        });
+
+        history.push('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -54,9 +70,11 @@ const ForgotPassword: React.FC = () => {
           description:
             'Ocorreu um erro ao tentar recuperar sua senha, tente novamente',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [addToast],
+    [addToast, history],
   );
 
   return (
@@ -75,7 +93,9 @@ const ForgotPassword: React.FC = () => {
               placeholder="E-mail"
             />
 
-            <Button type="submit">Enviar</Button>
+            <Button type="submit" loading={loading}>
+              Enviar
+            </Button>
           </Form>
 
           <Link to="/">
