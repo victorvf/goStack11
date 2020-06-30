@@ -34,8 +34,8 @@ export const Profile = styled.div`
   margin-left: 80px;
 
   > img {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
   }
 `;
