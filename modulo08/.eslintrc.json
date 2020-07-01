@@ -35,6 +35,7 @@
         "react/jsx-props-no-spreading": "off",
         "no-unused-expressions": "off",
         "react/prop-types": "off",
+        "import/no-duplicates": "off",
         "react/jsx-filename-extension": [
             "warn",
             { "extensions": [".jsx", ".js", "tsx"]}
