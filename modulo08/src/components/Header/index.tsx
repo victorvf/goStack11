@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiPower } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import LogoGoBarber from '../../assets/logo.svg';
 
@@ -26,7 +27,7 @@ const Header: React.FC = () => {
 
           <ProfileContent>
             <span>Bem vindo,</span>
-            <strong>{user.name}</strong>
+            <Link to="/profile">{user.name}</Link>
           </ProfileContent>
         </Profile>
 

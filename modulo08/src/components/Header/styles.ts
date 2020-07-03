@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.header`
   padding: 32px 0;
@@ -50,7 +51,13 @@ export const ProfileContent = styled.div`
     color: #f4ede8;
   }
 
-  strong {
+  a {
     color: #ff9000;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      color: ${darken(0.2, '#ff9000')};
+    }
   }
 `;

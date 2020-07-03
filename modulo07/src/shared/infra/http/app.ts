@@ -16,10 +16,10 @@ import RateLimiterMiddleware from './middlewares/RateLimiter';
 
 const app = express();
 
-app.use(RateLimiterMiddleware);
 app.use(cors());
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.tmpFolder));
+app.use('/files', express.static(uploadConfig.uploadsFolder));
+app.use(RateLimiterMiddleware);
 app.use(routes);
 
 app.use(errors());
