@@ -50,6 +50,14 @@
 
 <p>We completed the goBarber backend, where we use validation, cache, environment variable and somethings about security.</p>
 
+- <a href="https://github.com/victorvf/goStack11/tree/master/modulo08">Module 08</a>
+
+<p>We completed the goBarber web.</p>
+
+- <a href="https://github.com/victorvf/goStack11/tree/master/modulo09">Module 09</a>
+
+<p>We completed the goBarber mobile.</p>
+
 ## :memo: License
 
 This project is under the MIT license. See the archive [LICENSE](https://github.com/Rocketseat/bootcamp-gostack-desafio-03/blob/master/LICENSE.md) for more details.
