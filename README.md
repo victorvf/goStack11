@@ -58,6 +58,10 @@
 
 <p>We completed the goBarber mobile.</p>
 
+- <a href="https://github.com/victorvf/goStack11/tree/master/modulo10">Module 10</a>
+
+<p>Tests on React and React Native.</p>
+
 ## :memo: License
 
 This project is under the MIT license. See the archive [LICENSE](https://github.com/Rocketseat/bootcamp-gostack-desafio-03/blob/master/LICENSE.md) for more details.
