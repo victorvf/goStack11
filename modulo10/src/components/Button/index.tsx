@@ -8,7 +8,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const Button: React.FC<ButtonProps> = ({ children, loading, ...rest }) => {
   return (
-    <Container type="button" {...rest}>
+    <Container type="button" {...rest} data-testid="button-component">
       {loading ? 'Carregando ...' : children}
     </Container>
   );
