@@ -12,7 +12,7 @@ const Header: React.FC = () => {
   const { signOut, user } = useAuth();
 
   return (
-    <Container>
+    <Container data-testid="header-container">
       <HeaderContent>
         <img src={LogoGoBarber} alt="goBarber" />
 
@@ -31,7 +31,7 @@ const Header: React.FC = () => {
           </ProfileContent>
         </Profile>
 
-        <button type="button" onClick={signOut}>
+        <button data-testid="header-button" type="button" onClick={signOut}>
           <FiPower />
         </button>
       </HeaderContent>
