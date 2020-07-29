@@ -82,7 +82,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     async function loadAppointments(): Promise<void> {
-      const response = await api.get<Appointment[]>('/providers/schedule', {
+      const response = await api.get('/providers/schedule', {
         params: {
           day: selectedDate.getDate(),
           month: selectedDate.getMonth() + 1,
@@ -90,12 +90,14 @@ const Dashboard: React.FC = () => {
         },
       });
 
-      const appointmentsFormatted = response.data.map((appointment) => {
-        return {
-          ...appointment,
-          hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
-        };
-      });
+      const appointmentsFormatted = response.data.map(
+        (appointment: Appointment) => {
+          return {
+            ...appointment,
+            hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
+          };
+        },
+      );
 
       setAppointments(appointmentsFormatted);
     }
