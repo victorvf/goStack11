@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from 'react-native-testing-library';
+import { render, fireEvent, waitFor, act } from 'react-native-testing-library';
 
 import { Alert } from 'react-native';
 import SignIn from '../../pages/SignIn';
@@ -37,10 +37,12 @@ describe('Sign In page', () => {
 
     const buttonSubmit = getByText('Entrar');
 
-    fireEvent.changeText(emailElement, 'victor@mail.com');
-    fireEvent.changeText(passwordElement, '123456');
+    act(() => {
+      fireEvent.changeText(emailElement, 'victor@mail.com');
+      fireEvent.changeText(passwordElement, '123456');
 
-    fireEvent.press(buttonSubmit);
+      fireEvent.press(buttonSubmit);
+    });
 
     await waitFor(() => {
       expect(mockedSignIn).toHaveBeenCalled();
@@ -49,6 +51,8 @@ describe('Sign In page', () => {
   });
 
   it('should not be able to sign in with invalid credentials', async () => {
+    const alertSpy = jest.spyOn(Alert, 'alert');
+
     const { getByPlaceholder, getByText } = render(<SignIn />);
 
     const emailElement = getByPlaceholder('E-mail');
@@ -56,21 +60,26 @@ describe('Sign In page', () => {
 
     const buttonSubmit = getByText('Entrar');
 
-    fireEvent.changeText(emailElement, 'invalid-email');
-    fireEvent.changeText(passwordElement, '123456');
+    act(() => {
+      fireEvent.changeText(emailElement, 'invalid-email');
+      fireEvent.changeText(passwordElement, '123456');
 
-    fireEvent.press(buttonSubmit);
+      fireEvent.press(buttonSubmit);
+    });
 
     await waitFor(() => {
       expect(mockedSignIn).not.toHaveBeenCalled();
       expect(mockedNavigate).not.toHaveBeenCalled();
+      expect(alertSpy).not.toHaveBeenCalled();
     });
   });
 
   it('should not be able to sign in if login fails', async () => {
-    mockedSignIn.mockImplementation(() => {
+    mockedSignIn.mockImplementationOnce(() => {
       throw new Error();
     });
+
+    const alertSpy = jest.spyOn(Alert, 'alert');
 
     const { getByPlaceholder, getByText } = render(<SignIn />);
 
@@ -79,13 +88,15 @@ describe('Sign In page', () => {
 
     const buttonSubmit = getByText('Entrar');
 
-    fireEvent.changeText(emailElement, 'invalid-email');
-    fireEvent.changeText(passwordElement, '123456');
+    act(() => {
+      fireEvent.changeText(emailElement, 'victor@mail.com');
+      fireEvent.changeText(passwordElement, '123456');
 
-    fireEvent.press(buttonSubmit);
+      fireEvent.press(buttonSubmit);
+    });
 
     await waitFor(() => {
-      expect(mockedSignIn).toThrowError();
+      expect(alertSpy).toHaveBeenCalled();
       expect(mockedNavigate).not.toHaveBeenCalled();
     });
   });
