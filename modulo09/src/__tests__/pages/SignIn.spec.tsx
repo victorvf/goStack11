@@ -1,6 +1,7 @@
 import React from 'react';
-import { render } from 'react-native-testing-library';
+import { render, fireEvent, waitFor } from 'react-native-testing-library';
 
+import { Alert } from 'react-native';
 import SignIn from '../../pages/SignIn';
 
 const mockedNavigate = jest.fn();
@@ -23,13 +24,69 @@ jest.mock('../../hooks/auth', () => {
 });
 
 describe('Sign In page', () => {
-  it('should be able to render Sign In page', () => {
-    const { getByPlaceholder } = render(<SignIn />);
+  beforeEach(() => {
+    mockedSignIn.mockClear();
+    mockedNavigate.mockClear();
+  });
+
+  it('should be able to sign in', async () => {
+    const { getByPlaceholder, getByText } = render(<SignIn />);
 
     const emailElement = getByPlaceholder('E-mail');
     const passwordElement = getByPlaceholder('Senha');
 
-    expect(emailElement).toBeTruthy();
-    expect(passwordElement).toBeTruthy();
+    const buttonSubmit = getByText('Entrar');
+
+    fireEvent.changeText(emailElement, 'victor@mail.com');
+    fireEvent.changeText(passwordElement, '123456');
+
+    fireEvent.press(buttonSubmit);
+
+    await waitFor(() => {
+      expect(mockedSignIn).toHaveBeenCalled();
+      expect(mockedNavigate).toHaveBeenCalled();
+    });
+  });
+
+  it('should not be able to sign in with invalid credentials', async () => {
+    const { getByPlaceholder, getByText } = render(<SignIn />);
+
+    const emailElement = getByPlaceholder('E-mail');
+    const passwordElement = getByPlaceholder('Senha');
+
+    const buttonSubmit = getByText('Entrar');
+
+    fireEvent.changeText(emailElement, 'invalid-email');
+    fireEvent.changeText(passwordElement, '123456');
+
+    fireEvent.press(buttonSubmit);
+
+    await waitFor(() => {
+      expect(mockedSignIn).not.toHaveBeenCalled();
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
+  });
+
+  it('should not be able to sign in if login fails', async () => {
+    mockedSignIn.mockImplementation(() => {
+      throw new Error();
+    });
+
+    const { getByPlaceholder, getByText } = render(<SignIn />);
+
+    const emailElement = getByPlaceholder('E-mail');
+    const passwordElement = getByPlaceholder('Senha');
+
+    const buttonSubmit = getByText('Entrar');
+
+    fireEvent.changeText(emailElement, 'invalid-email');
+    fireEvent.changeText(passwordElement, '123456');
+
+    fireEvent.press(buttonSubmit);
+
+    await waitFor(() => {
+      expect(mockedSignIn).toThrowError();
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
   });
 });
