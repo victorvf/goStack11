@@ -76,14 +76,33 @@ const CreateAppointment: React.FC = () => {
   );
 
   useEffect(() => {
-    async function loadAppointments(): Promise<void> {
+    async function loadProviders(): Promise<void> {
       const response = await api.get('providers');
 
       setProviders(response.data);
     }
 
-    loadAppointments();
+    loadProviders();
   }, []);
+
+  useEffect(() => {
+    async function loadDayAvailability(): Promise<void> {
+      const response = await api.get(
+        `/providers/${selectedProvider}/day-availability`,
+        {
+          params: {
+            day: selectedDate.getDate(),
+            month: selectedDate.getMonth() + 1,
+            year: selectedDate.getFullYear(),
+          },
+        },
+      );
+
+      setDayAvailability(response.data);
+    }
+
+    loadDayAvailability();
+  }, [selectedDate, selectedProvider]);
 
   const NavigateGoBackToDashboard = useCallback(() => {
     goBack();
@@ -109,25 +128,6 @@ const CreateAppointment: React.FC = () => {
     },
     [],
   );
-
-  useEffect(() => {
-    async function loadDayAvailability(): Promise<void> {
-      const response = await api.get(
-        `/providers/${selectedProvider}/day-availability`,
-        {
-          params: {
-            day: selectedDate.getDate(),
-            month: selectedDate.getMonth() + 1,
-            year: selectedDate.getFullYear(),
-          },
-        },
-      );
-
-      setDayAvailability(response.data);
-    }
-
-    loadDayAvailability();
-  }, [selectedDate, selectedProvider]);
 
   const morningAvailability = useMemo<shiftsAvailabilityItem[]>(() => {
     return dayAvailability
@@ -181,7 +181,7 @@ const CreateAppointment: React.FC = () => {
   return (
     <Container>
       <Header>
-        <BackButton onPress={NavigateGoBackToDashboard}>
+        <BackButton testID="back-button" onPress={NavigateGoBackToDashboard}>
           <Icon name="chevron-left" size={24} color="#999591" />
         </BackButton>
 
@@ -199,6 +199,7 @@ const CreateAppointment: React.FC = () => {
             keyExtractor={(provider) => provider.id}
             renderItem={({ item: provider }) => (
               <ProviderContainer
+                testID="select-provider"
                 onPress={() => handleSelectedProvider(provider.id)}
                 selected={provider.id === selectedProvider}
               >
