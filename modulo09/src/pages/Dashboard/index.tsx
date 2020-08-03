@@ -64,7 +64,7 @@ const Dashboard: React.FC = () => {
           <UserName>{user.name}</UserName>
         </HeaderTitle>
 
-        <ProfileButton onPress={navigateToProfile}>
+        <ProfileButton testID="profile-button" onPress={navigateToProfile}>
           <UserAvatar source={{ uri: user.avatar_url }} />
         </ProfileButton>
       </Header>
@@ -77,6 +77,7 @@ const Dashboard: React.FC = () => {
         }
         renderItem={({ item: provider }) => (
           <ProviderContainer
+            testID="provider-button"
             onPress={() => navigateToCreateAppointment(provider.id)}
           >
             <ProviderAvatar
