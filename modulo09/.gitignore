@@ -33,6 +33,10 @@ local.properties
 #
 .vscode/
 
+# tests
+#
+coverage/
+
 # node.js
 #
 node_modules/

@@ -153,6 +153,7 @@ const SignUp: React.FC = () => {
       </KeyboardAvoidingView>
 
       <BackToSignInButton
+        testID="back-button"
         onPress={() => {
           navigation.goBack();
         }}
